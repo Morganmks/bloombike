@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bloom Bike</title>
+
+  <!-- Inter — clean, modern, SF-like -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- =========================================================
+       ICON SPRITE
+       All icons are defined here once; referenced via <use>.
+       Lucide-inspired: 24x24, 1.75 stroke, rounded caps.
+       ========================================================= -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <symbol id="i-home" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 11 12 3l9 8"/>
+        <path d="M5 10v10a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1V10"/>
+      </symbol>
+
+      <symbol id="i-map" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M9 3 3 6v15l6-3 6 3 6-3V3l-6 3-6-3Z"/>
+        <path d="M9 3v15M15 6v15"/>
+      </symbol>
+
+      <symbol id="i-gift" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="8" width="18" height="4" rx="1"/>
+        <path d="M12 8v13"/>
+        <path d="M19 12v8a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-8"/>
+        <path d="M7.5 8a2.5 2.5 0 0 1 0-5c3 0 4.5 5 4.5 5"/>
+        <path d="M16.5 8a2.5 2.5 0 0 0 0-5c-3 0-4.5 5-4.5 5"/>
+      </symbol>
+
+      <symbol id="i-sprout" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M7 20h10"/>
+        <path d="M12 20V9"/>
+        <path d="M12 9c0-3 2-5 5-5 0 3-2 5-5 5Z"/>
+        <path d="M12 13c0-3-2-5-5-5 0 3 2 5 5 5Z"/>
+      </symbol>
+
+      <symbol id="i-bike" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="5.5" cy="17.5" r="3.5"/>
+        <circle cx="18.5" cy="17.5" r="3.5"/>
+        <path d="M15 6h4l-3.5 11.5"/>
+        <path d="M5.5 17.5 10 9h5l1 3"/>
+        <circle cx="17" cy="5" r="1"/>
+      </symbol>
+
+      <symbol id="i-bolt" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M13 3 4 14h7l-1 7 9-11h-7l1-7Z"/>
+      </symbol>
+
+      <symbol id="i-coin" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="9"/>
+        <path d="M12 7.5v9M9 10.5a2.5 2.5 0 1 1 0 3H15a2.5 2.5 0 1 0 0-3"/>
+      </symbol>
+
+      <symbol id="i-route" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="6" cy="19" r="2"/>
+        <circle cx="18" cy="5" r="2"/>
+        <path d="M8 19h7a3 3 0 0 0 0-6H9a3 3 0 0 1 0-6h7"/>
+      </symbol>
+
+      <symbol id="i-settings" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="3"/>
+        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.1a1.65 1.65 0 0 0-1-1.5 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9 1.65 1.65 0 0 0 4.27 7.18l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09A1.65 1.65 0 0 0 15 4.6a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9c.05.28.16.54.33.77l.02.03A1.65 1.65 0 0 0 21 10.9H21a2 2 0 0 1 0 4h-.1a1.65 1.65 0 0 0-1.5 1Z"/>
+      </symbol>
+
+      <symbol id="i-chev-left" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="15 6 9 12 15 18"/>
+      </symbol>
+
+      <symbol id="i-arrow-right" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="5" y1="12" x2="19" y2="12"/>
+        <polyline points="13 6 19 12 13 18"/>
+      </symbol>
+
+      <symbol id="i-leaf" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.5 19.2 3 20.6 12.3 17.2 17.5 11 20Z"/>
+        <path d="M2 21c1.5-4 3.5-6 7-8"/>
+      </symbol>
+
+      <symbol id="i-flower" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="2.5"/>
+        <circle cx="12" cy="5.5" r="2.5"/>
+        <circle cx="12" cy="18.5" r="2.5"/>
+        <circle cx="5.5" cy="12" r="2.5"/>
+        <circle cx="18.5" cy="12" r="2.5"/>
+      </symbol>
+
+      <symbol id="i-gem" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <path d="m6 3 6-2 6 2 4 6-10 12L2 9l4-6Z"/>
+        <path d="M2 9h20"/>
+        <path d="m12 1-3 8 3 12 3-12-3-8Z"/>
+      </symbol>
+
+      <symbol id="i-sparkle" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.5 5.5l2 2M16.5 16.5l2 2M5.5 18.5l2-2M16.5 7.5l2-2"/>
+        <circle cx="12" cy="12" r="2"/>
+      </symbol>
+
+      <symbol id="i-flag" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M5 21V4"/>
+        <path d="M5 5h12l-2 4 2 4H5"/>
+      </symbol>
+    </defs>
+  </svg>
+
+  <!-- =========================================================
+       PHONE FRAME
+       ========================================================= -->
+  <div class="phone">
+
+    <!-- iOS-style status bar -->
+    <div class="status-bar">
+      <span class="time">9:41</span>
+      <span class="icons">
+        <span class="signal"></span>
+        <span class="wifi"></span>
+        <span class="battery"></span>
+      </span>
+    </div>
+
+    <!-- ===== SCREEN 1: HOME ===== -->
+    <section class="screen screen--home is-active" id="screen-home">
+
+      <header class="home-header">
+        <div>
+          <p class="home-hello">Good morning</p>
+          <h1 class="home-name">Morgan</h1>
+        </div>
+        <div class="avatar" aria-label="Your avatar">M</div>
+      </header>
+
+      <!-- Stats row -->
+      <section class="stats-row">
+        <div class="stat-card">
+          <div class="stat-icon stat-icon--green">
+            <svg class="icon"><use href="#i-route"/></svg>
+          </div>
+          <p class="stat-value">3.2<span>mi</span></p>
+          <p class="stat-label">This week</p>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon stat-icon--teal">
+            <svg class="icon"><use href="#i-bolt"/></svg>
+          </div>
+          <p class="stat-value">148<span>Wh</span></p>
+          <p class="stat-label">Energy</p>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon stat-icon--amber">
+            <svg class="icon"><use href="#i-coin"/></svg>
+          </div>
+          <p class="stat-value">240</p>
+          <p class="stat-label">Coins</p>
+        </div>
+      </section>
+
+      <!-- Weekly goal -->
+      <section class="card progress-card">
+        <div class="progress-head">
+          <div>
+            <p class="progress-eyebrow">Weekly goal</p>
+            <p class="progress-value">3.2 <span>/ 10 mi</span></p>
+          </div>
+          <div class="progress-pct">32%</div>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" style="width: 32%;"></div>
+        </div>
+        <p class="progress-hint">
+          <svg class="icon icon--sm"><use href="#i-sprout"/></svg>
+          6.8 mi to unlock the Sunflower jersey
+        </p>
+      </section>
+
+      <!-- Primary CTA -->
+      <button class="cta-start" id="btn-start-ride">
+        <span class="cta-icon">
+          <svg class="icon"><use href="#i-bike"/></svg>
+        </span>
+        <span class="cta-text">
+          <strong>Start Ride</strong>
+          <small>Tap to begin tracking</small>
+        </span>
+        <svg class="icon cta-arrow"><use href="#i-arrow-right"/></svg>
+      </button>
+
+      <!-- Impact teaser -->
+      <section class="card impact-card">
+        <div class="impact-row">
+          <span class="impact-badge">
+            <svg class="icon"><use href="#i-leaf"/></svg>
+          </span>
+          <div>
+            <p class="impact-title">Impact this month</p>
+            <p class="impact-body">You and 42 riders powered
+              <strong>3 homes</strong> in Asheville, NC.</p>
+          </div>
+        </div>
+        <button class="link-btn">
+          See full impact
+          <svg class="icon icon--sm"><use href="#i-arrow-right"/></svg>
+        </button>
+      </section>
+
+    </section>
+
+    <!-- ===== SCREEN 2: RIDE MAP ===== -->
+    <section class="screen screen--ride" id="screen-ride">
+
+      <!-- Floating top bar -->
+      <div class="ride-top">
+        <button class="icon-btn" id="btn-back" aria-label="Back">
+          <svg class="icon"><use href="#i-chev-left"/></svg>
+        </button>
+        <div class="ride-timer">
+          <span class="timer-dot"></span>
+          <span id="ride-timer-text">00:00</span>
+        </div>
+        <button class="icon-btn" aria-label="Settings">
+          <svg class="icon"><use href="#i-settings"/></svg>
+        </button>
+      </div>
+
+      <!-- Fake map -->
+      <div class="map">
+        <svg class="route" viewBox="0 0 390 600" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="route-grad" x1="0" y1="1" x2="1" y2="0">
+              <stop offset="0%" stop-color="#2E8B57" />
+              <stop offset="100%" stop-color="#0E7C86" />
+            </linearGradient>
+            <filter id="route-glow" x="-20%" y="-20%" width="140%" height="140%">
+              <feGaussianBlur stdDeviation="4" result="b"/>
+              <feMerge>
+                <feMergeNode in="b"/>
+                <feMergeNode in="SourceGraphic"/>
+              </feMerge>
+            </filter>
+          </defs>
+          <path id="route-path"
+                d="M 40 540 Q 80 460 140 420 T 230 300 T 300 180 T 340 60"
+                fill="none"
+                stroke="url(#route-grad)"
+                stroke-width="5"
+                stroke-linecap="round"
+                filter="url(#route-glow)" />
+          <circle id="rider-dot" cx="40" cy="540" r="8"
+                  fill="#2E8B57" stroke="#fff" stroke-width="3" />
+        </svg>
+
+        <!-- Collectibles -->
+        <button class="collectible collectible--rose" style="top: 58%; left: 34%;"
+                data-coins="15" data-label="Daisy collected" data-icon="i-flower">
+          <svg class="icon"><use href="#i-flower"/></svg>
+        </button>
+        <button class="collectible collectible--amber" style="top: 42%; left: 62%;"
+                data-coins="25" data-label="Energy boost" data-icon="i-bolt">
+          <svg class="icon"><use href="#i-bolt"/></svg>
+        </button>
+        <button class="collectible collectible--green" style="top: 28%; left: 48%;"
+                data-coins="10" data-label="Sparkle collected" data-icon="i-sparkle">
+          <svg class="icon"><use href="#i-sparkle"/></svg>
+        </button>
+        <button class="collectible collectible--teal" style="top: 14%; left: 72%;"
+                data-coins="40" data-label="Rare gem" data-icon="i-gem">
+          <svg class="icon"><use href="#i-gem"/></svg>
+        </button>
+      </div>
+
+      <!-- Bottom stats panel -->
+      <div class="ride-panel">
+        <div class="panel-handle" aria-hidden="true"></div>
+        <div class="panel-stats">
+          <div class="panel-stat">
+            <p class="ps-value" id="ride-distance">0.0</p>
+            <p class="ps-label">Miles</p>
+          </div>
+          <div class="panel-sep"></div>
+          <div class="panel-stat">
+            <p class="ps-value" id="ride-energy">0</p>
+            <p class="ps-label">Watt-hrs</p>
+          </div>
+          <div class="panel-sep"></div>
+          <div class="panel-stat">
+            <p class="ps-value" id="ride-coins">0</p>
+            <p class="ps-label">Coins</p>
+          </div>
+        </div>
+
+        <div class="panel-toast" id="ride-toast" hidden>
+          <svg class="icon icon--sm" id="toast-icon"><use href="#i-flower"/></svg>
+          <span id="toast-text">+15 coins · Daisy collected</span>
+        </div>
+
+        <button class="cta-end" id="btn-end-ride">
+          <svg class="icon icon--sm"><use href="#i-flag"/></svg>
+          End Ride
+        </button>
+      </div>
+
+    </section>
+
+    <!-- ===== TAB BAR ===== -->
+    <nav class="tab-bar">
+      <button class="tab is-active" data-tab="home">
+        <svg class="icon"><use href="#i-home"/></svg>
+        <span>Home</span>
+      </button>
+      <button class="tab" data-tab="map">
+        <svg class="icon"><use href="#i-map"/></svg>
+        <span>Ride</span>
+      </button>
+      <button class="tab" data-tab="rewards">
+        <svg class="icon"><use href="#i-gift"/></svg>
+        <span>Rewards</span>
+      </button>
+      <button class="tab" data-tab="impact">
+        <svg class="icon"><use href="#i-sprout"/></svg>
+        <span>Impact</span>
+      </button>
+    </nav>
+
+  </div>
+
+  <p class="frame-caption">Bloom Bike · Prototype</p>
+
+  <script src="app.js"></script>
+</body>
+</html>
