@@ -1,356 +1,688 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Bloom Bike</title>
-
-  <!-- Inter — clean, modern, SF-like -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
-
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#1F8A5A" />
+  <title>Bloom Bike — Prototype</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+  />
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-
-  <!-- =========================================================
-       ICON SPRITE
-       All icons are defined here once; referenced via <use>.
-       Lucide-inspired: 24x24, 1.75 stroke, rounded caps.
-       ========================================================= -->
-  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <!-- ==========================================================
+       INLINE SVG SPRITE — a single hidden svg with <symbol> defs.
+       Reference any icon via <svg class="icon"><use href="#id"/></svg>
+       Lucide-style: 24x24 viewBox, 1.75 stroke, round caps/joins, currentColor.
+       ========================================================== -->
+  <svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" style="position:absolute" aria-hidden="true">
     <defs>
-      <symbol id="i-home" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-              stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M3 11 12 3l9 8"/>
-        <path d="M5 10v10a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1V10"/>
+      <symbol id="i-home" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 11.5 12 4l9 7.5" />
+        <path d="M5 10.5V20a1 1 0 0 0 1 1h4v-6h4v6h4a1 1 0 0 0 1-1v-9.5" />
       </symbol>
-
-      <symbol id="i-map" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-              stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M9 3 3 6v15l6-3 6 3 6-3V3l-6 3-6-3Z"/>
-        <path d="M9 3v15M15 6v15"/>
+      <symbol id="i-map" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2Z" />
+        <path d="M9 4v14" />
+        <path d="M15 6v14" />
       </symbol>
-
-      <symbol id="i-gift" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-              stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-        <rect x="3" y="8" width="18" height="4" rx="1"/>
-        <path d="M12 8v13"/>
-        <path d="M19 12v8a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-8"/>
-        <path d="M7.5 8a2.5 2.5 0 0 1 0-5c3 0 4.5 5 4.5 5"/>
-        <path d="M16.5 8a2.5 2.5 0 0 0 0-5c-3 0-4.5 5-4.5 5"/>
+      <symbol id="i-gift" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3" y="8" width="18" height="4" rx="1" />
+        <path d="M12 8v13" />
+        <path d="M19 12v8a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-8" />
+        <path d="M7.5 8a2.5 2.5 0 0 1 0-5C10 3 12 8 12 8s2-5 4.5-5a2.5 2.5 0 0 1 0 5" />
       </symbol>
-
-      <symbol id="i-sprout" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-              stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M7 20h10"/>
-        <path d="M12 20V9"/>
-        <path d="M12 9c0-3 2-5 5-5 0 3-2 5-5 5Z"/>
-        <path d="M12 13c0-3-2-5-5-5 0 3 2 5 5 5Z"/>
+      <symbol id="i-sprout" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M7 20h10" />
+        <path d="M12 20v-6" />
+        <path d="M12 14c0-3 2-5 6-5-.3 3-2.7 5-6 5Z" />
+        <path d="M12 14c0-4-2-6-6-6 .3 3.5 2.7 6 6 6Z" />
       </symbol>
-
-      <symbol id="i-bike" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-              stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="5.5" cy="17.5" r="3.5"/>
-        <circle cx="18.5" cy="17.5" r="3.5"/>
-        <path d="M15 6h4l-3.5 11.5"/>
-        <path d="M5.5 17.5 10 9h5l1 3"/>
-        <circle cx="17" cy="5" r="1"/>
+      <symbol id="i-bike" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="6" cy="17" r="3.5" />
+        <circle cx="18" cy="17" r="3.5" />
+        <path d="M6 17l4-9h5l3 9" />
+        <path d="M10 8h3" />
+        <path d="M15 8l-1-2h-2" />
       </symbol>
-
-      <symbol id="i-bolt" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-              stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M13 3 4 14h7l-1 7 9-11h-7l1-7Z"/>
+      <symbol id="i-bolt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M13 3 4 14h6l-1 7 9-11h-6l1-7Z" />
       </symbol>
-
-      <symbol id="i-coin" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-              stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="12" cy="12" r="9"/>
-        <path d="M12 7.5v9M9 10.5a2.5 2.5 0 1 1 0 3H15a2.5 2.5 0 1 0 0-3"/>
+      <symbol id="i-coin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="8" />
+        <path d="M9 10.5c0-1.2 1-2 3-2s3 .8 3 2-1 1.8-3 2-3 .8-3 2 1 2 3 2 3-.8 3-2" />
+        <path d="M12 7v1.5M12 15.5V17" />
       </symbol>
-
-      <symbol id="i-route" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-              stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="6" cy="19" r="2"/>
-        <circle cx="18" cy="5" r="2"/>
-        <path d="M8 19h7a3 3 0 0 0 0-6H9a3 3 0 0 1 0-6h7"/>
+      <symbol id="i-route" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="6" cy="19" r="2" />
+        <circle cx="18" cy="5" r="2" />
+        <path d="M8 19h6a4 4 0 0 0 0-8h-4a4 4 0 0 1 0-8h6" />
       </symbol>
-
-      <symbol id="i-settings" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-              stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="12" cy="12" r="3"/>
-        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.1a1.65 1.65 0 0 0-1-1.5 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9 1.65 1.65 0 0 0 4.27 7.18l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09A1.65 1.65 0 0 0 15 4.6a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9c.05.28.16.54.33.77l.02.03A1.65 1.65 0 0 0 21 10.9H21a2 2 0 0 1 0 4h-.1a1.65 1.65 0 0 0-1.5 1Z"/>
+      <symbol id="i-settings" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="3" />
+        <path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z" />
       </symbol>
-
-      <symbol id="i-chev-left" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-              stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="15 6 9 12 15 18"/>
+      <symbol id="i-chev-left" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="m15 6-6 6 6 6" />
       </symbol>
-
-      <symbol id="i-arrow-right" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-              stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-        <line x1="5" y1="12" x2="19" y2="12"/>
-        <polyline points="13 6 19 12 13 18"/>
+      <symbol id="i-arrow-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M5 12h14" />
+        <path d="m13 6 6 6-6 6" />
       </symbol>
-
-      <symbol id="i-leaf" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-              stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.5 19.2 3 20.6 12.3 17.2 17.5 11 20Z"/>
-        <path d="M2 21c1.5-4 3.5-6 7-8"/>
+      <symbol id="i-leaf" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M11 20A8 8 0 0 1 3 12c0-4 3-9 9-9 1 0 3 .3 5 1 0 6-3 15-6 16Z" />
+        <path d="M3 21c3-5 7-9 11-11" />
       </symbol>
-
-      <symbol id="i-flower" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-              stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="12" cy="12" r="2.5"/>
-        <circle cx="12" cy="5.5" r="2.5"/>
-        <circle cx="12" cy="18.5" r="2.5"/>
-        <circle cx="5.5" cy="12" r="2.5"/>
-        <circle cx="18.5" cy="12" r="2.5"/>
+      <symbol id="i-flower" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="2" />
+        <path d="M12 10c0-2-1-4-3-4s-3 2-2 4" />
+        <path d="M12 14c0 2 1 4 3 4s3-2 2-4" />
+        <path d="M14 12c2 0 4-1 4-3s-2-3-4-2" />
+        <path d="M10 12c-2 0-4 1-4 3s2 3 4 2" />
       </symbol>
-
-      <symbol id="i-gem" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-              stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-        <path d="m6 3 6-2 6 2 4 6-10 12L2 9l4-6Z"/>
-        <path d="M2 9h20"/>
-        <path d="m12 1-3 8 3 12 3-12-3-8Z"/>
+      <symbol id="i-gem" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M6 3h12l3 6-9 12L3 9Z" />
+        <path d="M3 9h18" />
+        <path d="M12 3 8 9l4 12 4-12-4-6Z" />
       </symbol>
-
-      <symbol id="i-sparkle" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-              stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.5 5.5l2 2M16.5 16.5l2 2M5.5 18.5l2-2M16.5 7.5l2-2"/>
-        <circle cx="12" cy="12" r="2"/>
+      <symbol id="i-sparkle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 3v4M12 17v4M3 12h4M17 12h4" />
+        <path d="M12 8c1 2 2 3 4 4-2 1-3 2-4 4-1-2-2-3-4-4 2-1 3-2 4-4Z" />
       </symbol>
-
-      <symbol id="i-flag" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-              stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M5 21V4"/>
-        <path d="M5 5h12l-2 4 2 4H5"/>
+      <symbol id="i-flag" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M5 21V4" />
+        <path d="M5 4h11l-2 4 2 4H5" />
+      </symbol>
+      <!-- ===== NEW for redesign ===== -->
+      <symbol id="i-avatar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="8" r="4" />
+        <path d="M4 21c1-4 4-6 8-6s7 2 8 6" />
+      </symbol>
+      <symbol id="i-friends" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="9" cy="8" r="3.5" />
+        <circle cx="17" cy="9" r="2.5" />
+        <path d="M3 20c0-3 2.5-5 6-5s6 2 6 5" />
+        <path d="M15 15c3 0 6 1.5 6 5" />
+      </symbol>
+      <symbol id="i-trophy" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M8 4h8v5a4 4 0 0 1-8 0Z" />
+        <path d="M8 6H5v2a3 3 0 0 0 3 3" />
+        <path d="M16 6h3v2a3 3 0 0 1-3 3" />
+        <path d="M12 13v3" />
+        <path d="M9 20h6" />
+        <path d="M10 16h4l-1 4h-2Z" />
+      </symbol>
+      <symbol id="i-compass" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="9" />
+        <path d="m15 9-2 6-4 1 2-6Z" />
+      </symbol>
+      <symbol id="i-pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 22s7-7 7-12a7 7 0 1 0-14 0c0 5 7 12 7 12Z" />
+        <circle cx="12" cy="10" r="2.5" />
+      </symbol>
+      <symbol id="i-message" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M4 5h16v11H8l-4 4Z" />
+      </symbol>
+      <symbol id="i-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="7" />
+        <path d="m20 20-3.5-3.5" />
+      </symbol>
+      <symbol id="i-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 5v14M5 12h14" />
       </symbol>
     </defs>
   </svg>
 
-  <!-- =========================================================
-       PHONE FRAME
-       ========================================================= -->
-  <div class="phone">
-
-    <!-- iOS-style status bar -->
+  <!-- Phone frame -->
+  <div class="phone" role="application" aria-label="Bloom Bike prototype">
+    <!-- Status bar -->
     <div class="status-bar">
-      <span class="time">9:41</span>
-      <span class="icons">
-        <span class="signal"></span>
-        <span class="wifi"></span>
-        <span class="battery"></span>
+      <span>9:41</span>
+      <span class="status-right">
+        <svg class="status-ico" viewBox="0 0 18 12" aria-hidden="true"><path fill="currentColor" d="M1 9h2v2H1zM5 7h2v4H5zM9 5h2v6H9zM13 3h2v8h-2z"/></svg>
+        <svg class="status-ico" viewBox="0 0 18 12" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.4" d="M1 5a8 8 0 0 1 16 0"/><path fill="none" stroke="currentColor" stroke-width="1.4" d="M4 7a5 5 0 0 1 10 0"/><circle cx="9" cy="9" r="1.2" fill="currentColor"/></svg>
+        <svg class="status-ico" viewBox="0 0 24 12" aria-hidden="true"><rect x="1" y="2" width="19" height="8" rx="2" fill="none" stroke="currentColor" stroke-width="1.2"/><rect x="3" y="4" width="13" height="4" rx="1" fill="currentColor"/><rect x="21" y="5" width="2" height="2" rx="0.5" fill="currentColor"/></svg>
       </span>
     </div>
 
-    <!-- ===== SCREEN 1: HOME ===== -->
-    <section class="screen screen--home is-active" id="screen-home">
-
-      <header class="home-header">
-        <div>
-          <p class="home-hello">Good morning</p>
-          <h1 class="home-name">Morgan</h1>
+    <!-- ==========================================================
+         MAP / HOME SCREEN (was #screen-home, now #screen-map)
+         ========================================================== -->
+    <section class="screen is-active" id="screen-map" aria-label="Home">
+      <header class="hero">
+        <div class="hero-row">
+          <div class="avatar" aria-hidden="true">
+            <svg class="avatar-ico" viewBox="0 0 24 24"><use href="#i-sprout"/></svg>
+          </div>
+          <div class="hero-greeting">
+            <p class="kicker">Good morning</p>
+            <h1 class="hero-title">Morgan</h1>
+          </div>
+          <button class="icon-btn" aria-label="Settings">
+            <svg class="icon" viewBox="0 0 24 24"><use href="#i-settings"/></svg>
+          </button>
         </div>
-        <div class="avatar" aria-label="Your avatar">M</div>
+
+        <div class="week-card">
+          <div class="week-row">
+            <span class="week-label">This week</span>
+            <span class="week-pill">
+              <svg class="icon-sm" viewBox="0 0 24 24"><use href="#i-leaf"/></svg>
+              On track
+            </span>
+          </div>
+          <div class="stats-row">
+            <div class="stat">
+              <span class="stat-ico stat-ico--green"><svg class="icon-sm" viewBox="0 0 24 24"><use href="#i-bike"/></svg></span>
+              <div>
+                <span class="stat-value">12.4<small>mi</small></span>
+                <span class="stat-label">Distance</span>
+              </div>
+            </div>
+            <div class="stat">
+              <span class="stat-ico stat-ico--teal"><svg class="icon-sm" viewBox="0 0 24 24"><use href="#i-bolt"/></svg></span>
+              <div>
+                <span class="stat-value">580<small>Wh</small></span>
+                <span class="stat-label">Energy</span>
+              </div>
+            </div>
+            <div class="stat">
+              <span class="stat-ico stat-ico--amber"><svg class="icon-sm" viewBox="0 0 24 24"><use href="#i-coin"/></svg></span>
+              <div>
+                <span class="stat-value">1,240</span>
+                <span class="stat-label">Coins</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="progress">
+            <div class="progress-bar" style="--pct:62%"></div>
+          </div>
+          <p class="progress-caption">62% to weekly goal · 7.6 mi to go</p>
+        </div>
       </header>
 
-      <!-- Stats row -->
-      <section class="stats-row">
-        <div class="stat-card">
-          <div class="stat-icon stat-icon--green">
-            <svg class="icon"><use href="#i-route"/></svg>
-          </div>
-          <p class="stat-value">3.2<span>mi</span></p>
-          <p class="stat-label">This week</p>
-        </div>
-        <div class="stat-card">
-          <div class="stat-icon stat-icon--teal">
-            <svg class="icon"><use href="#i-bolt"/></svg>
-          </div>
-          <p class="stat-value">148<span>Wh</span></p>
-          <p class="stat-label">Energy</p>
-        </div>
-        <div class="stat-card">
-          <div class="stat-icon stat-icon--amber">
-            <svg class="icon"><use href="#i-coin"/></svg>
-          </div>
-          <p class="stat-value">240</p>
-          <p class="stat-label">Coins</p>
-        </div>
-      </section>
-
-      <!-- Weekly goal -->
-      <section class="card progress-card">
-        <div class="progress-head">
-          <div>
-            <p class="progress-eyebrow">Weekly goal</p>
-            <p class="progress-value">3.2 <span>/ 10 mi</span></p>
-          </div>
-          <div class="progress-pct">32%</div>
-        </div>
-        <div class="progress-track">
-          <div class="progress-fill" style="width: 32%;"></div>
-        </div>
-        <p class="progress-hint">
-          <svg class="icon icon--sm"><use href="#i-sprout"/></svg>
-          6.8 mi to unlock the Sunflower jersey
-        </p>
-      </section>
-
-      <!-- Primary CTA -->
-      <button class="cta-start" id="btn-start-ride">
-        <span class="cta-icon">
-          <svg class="icon"><use href="#i-bike"/></svg>
-        </span>
-        <span class="cta-text">
-          <strong>Start Ride</strong>
-          <small>Tap to begin tracking</small>
-        </span>
-        <svg class="icon cta-arrow"><use href="#i-arrow-right"/></svg>
-      </button>
-
-      <!-- Impact teaser -->
-      <section class="card impact-card">
-        <div class="impact-row">
-          <span class="impact-badge">
-            <svg class="icon"><use href="#i-leaf"/></svg>
+      <div class="home-body">
+        <button class="cta-start" id="btn-start-ride" type="button">
+          <span class="cta-ico">
+            <svg class="icon" viewBox="0 0 24 24"><use href="#i-bike"/></svg>
           </span>
-          <div>
-            <p class="impact-title">Impact this month</p>
-            <p class="impact-body">You and 42 riders powered
-              <strong>3 homes</strong> in Asheville, NC.</p>
+          <span class="cta-text">
+            <span class="cta-title">Start Ride</span>
+            <span class="cta-sub">Turn pedals into power</span>
+          </span>
+          <span class="cta-arrow">
+            <svg class="icon-sm" viewBox="0 0 24 24"><use href="#i-arrow-right"/></svg>
+          </span>
+        </button>
+
+        <div class="impact-card">
+          <div class="impact-head">
+            <span class="impact-title">Your impact</span>
+            <a class="impact-link" href="#">See all</a>
+          </div>
+          <div class="impact-row">
+            <div class="impact-chip">
+              <svg class="icon" viewBox="0 0 24 24"><use href="#i-leaf"/></svg>
+            </div>
+            <div class="impact-text">
+              <p class="impact-value">2.8 kWh generated</p>
+              <p class="impact-sub">≈ 11 hrs of lamp light</p>
+            </div>
           </div>
         </div>
-        <button class="link-btn">
-          See full impact
-          <svg class="icon icon--sm"><use href="#i-arrow-right"/></svg>
-        </button>
-      </section>
-
+      </div>
     </section>
 
-    <!-- ===== SCREEN 2: RIDE MAP ===== -->
-    <section class="screen screen--ride" id="screen-ride">
-
-      <!-- Floating top bar -->
-      <div class="ride-top">
+    <!-- ==========================================================
+         LIVE RIDE SCREEN
+         ========================================================== -->
+    <section class="screen" id="screen-ride" aria-label="Live ride">
+      <header class="ride-top">
         <button class="icon-btn" id="btn-back" aria-label="Back">
-          <svg class="icon"><use href="#i-chev-left"/></svg>
+          <svg class="icon" viewBox="0 0 24 24"><use href="#i-chev-left"/></svg>
         </button>
-        <div class="ride-timer">
-          <span class="timer-dot"></span>
-          <span id="ride-timer-text">00:00</span>
+        <div class="ride-title">
+          <span class="ride-kicker">Live ride</span>
+          <span class="ride-pulse"><span class="pulse-dot"></span> Recording</span>
         </div>
-        <button class="icon-btn" aria-label="Settings">
-          <svg class="icon"><use href="#i-settings"/></svg>
+        <button class="icon-btn" aria-label="Route">
+          <svg class="icon" viewBox="0 0 24 24"><use href="#i-route"/></svg>
         </button>
-      </div>
+      </header>
 
-      <!-- Fake map -->
-      <div class="map">
-        <svg class="route" viewBox="0 0 390 600" preserveAspectRatio="none">
+      <!-- ===========================================================
+           DETAILED MAP
+           viewBox 0 0 390 536 — maps linearly to the container via
+           preserveAspectRatio="none". Layered from bottom to top:
+           base → buildings → minor streets → parks → river → pond →
+           main avenue → labels → pins → route glow → route → rider.
+           =========================================================== -->
+      <div class="map" aria-hidden="true">
+        <svg class="map-svg" viewBox="0 0 390 536" preserveAspectRatio="none">
           <defs>
-            <linearGradient id="route-grad" x1="0" y1="1" x2="1" y2="0">
-              <stop offset="0%" stop-color="#2E8B57" />
-              <stop offset="100%" stop-color="#0E7C86" />
+            <linearGradient id="grad-route" x1="0" y1="100%" x2="100%" y2="0">
+              <stop offset="0%"  stop-color="#1F8A5A"/>
+              <stop offset="60%" stop-color="#0E7C86"/>
+              <stop offset="100%" stop-color="#0EA5E9"/>
             </linearGradient>
             <filter id="route-glow" x="-20%" y="-20%" width="140%" height="140%">
-              <feGaussianBlur stdDeviation="4" result="b"/>
-              <feMerge>
-                <feMergeNode in="b"/>
-                <feMergeNode in="SourceGraphic"/>
-              </feMerge>
+              <feGaussianBlur stdDeviation="3" result="b"/>
+              <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
             </filter>
+            <pattern id="street-grid" width="42" height="42" patternUnits="userSpaceOnUse">
+              <path d="M0 0.5H42" stroke="#DDE4D8" stroke-width="1"/>
+              <path d="M0.5 0V42" stroke="#DDE4D8" stroke-width="1"/>
+            </pattern>
           </defs>
+
+          <!-- Base terrain -->
+          <rect width="390" height="536" fill="#EEF2EB"/>
+
+          <!-- Parks / green blobs (organic) -->
+          <path d="M 0 0 Q 120 -10 150 60 T 90 150 Q 20 140 0 100 Z" fill="#CDE6CE"/>
+          <path d="M 260 420 Q 340 400 380 440 T 390 536 L 220 536 Q 220 470 260 420 Z" fill="#CDE6CE"/>
+          <path d="M 180 210 Q 230 200 250 240 Q 240 280 190 280 Q 160 250 180 210 Z" fill="#D6EAD4"/>
+
+          <!-- Building blocks (light gray) -->
+          <g fill="#E4E6E6">
+            <rect x="40"  y="40"  width="52" height="38" rx="3"/>
+            <rect x="100" y="30"  width="40" height="52" rx="3"/>
+            <rect x="150" y="48"  width="60" height="34" rx="3"/>
+            <rect x="220" y="20"  width="44" height="60" rx="3"/>
+            <rect x="275" y="35"  width="70" height="44" rx="3"/>
+            <rect x="30"  y="180" width="58" height="42" rx="3"/>
+            <rect x="100" y="190" width="44" height="54" rx="3"/>
+            <rect x="260" y="180" width="60" height="40" rx="3"/>
+            <rect x="325" y="160" width="45" height="58" rx="3"/>
+            <rect x="30"  y="300" width="60" height="44" rx="3"/>
+            <rect x="105" y="290" width="50" height="56" rx="3"/>
+            <rect x="170" y="320" width="56" height="36" rx="3"/>
+            <rect x="245" y="300" width="54" height="48" rx="3"/>
+            <rect x="318" y="290" width="54" height="40" rx="3"/>
+            <rect x="30"  y="420" width="52" height="42" rx="3"/>
+            <rect x="95"  y="430" width="60" height="44" rx="3"/>
+            <rect x="165" y="440" width="50" height="40" rx="3"/>
+          </g>
+
+          <!-- Minor street grid on top of everything (light) -->
+          <rect width="390" height="536" fill="url(#street-grid)" opacity="0.9"/>
+
+          <!-- River (winding blue) -->
+          <path d="M -10 470 Q 60 440 110 460 T 240 450 T 400 420"
+                fill="none" stroke="#CFE6F1" stroke-width="22" stroke-linecap="round"/>
+          <path d="M -10 470 Q 60 440 110 460 T 240 450 T 400 420"
+                fill="none" stroke="#BADAEB" stroke-width="1" stroke-dasharray="2 4" opacity="0.6"/>
+
+          <!-- Pond -->
+          <ellipse cx="310" cy="250" rx="30" ry="20" fill="#CFE6F1"/>
+          <ellipse cx="310" cy="250" rx="30" ry="20" fill="none" stroke="#B9D9E9" stroke-width="1"/>
+
+          <!-- Main avenue (diagonal, dual-stroke to fake a road with shoulders) -->
+          <path d="M -20 560 Q 80 470 160 400 T 300 240 T 410 100"
+                fill="none" stroke="#C7CDD2" stroke-width="18" stroke-linecap="round"/>
+          <path d="M -20 560 Q 80 470 160 400 T 300 240 T 410 100"
+                fill="none" stroke="#FAFAFA" stroke-width="12" stroke-linecap="round"/>
+          <path d="M -20 560 Q 80 470 160 400 T 300 240 T 410 100"
+                fill="none" stroke="#D1D5DB" stroke-width="1.2" stroke-dasharray="5 7"/>
+
+          <!-- District labels -->
+          <g font-family="Inter, sans-serif" font-weight="700" fill="#7C8A79" letter-spacing="0.12em">
+            <text x="42"  y="120" font-size="9">CAMPUS PARK</text>
+            <text x="218" y="110" font-size="9">OAKWOOD</text>
+            <text x="282" y="258" font-size="9">PONDSIDE</text>
+            <text x="56"  y="400" font-size="9">MAIN AVE</text>
+            <text x="260" y="500" font-size="9">RIVER DISTRICT</text>
+            <text x="200" y="260" font-size="8" fill="#7EA47F">MEADOW</text>
+          </g>
+
+          <!-- Start pin (green ripple) at route start -->
+          <g>
+            <circle cx="40" cy="510" r="14" fill="#1F8A5A" opacity="0.18"/>
+            <circle cx="40" cy="510" r="8" fill="#1F8A5A" opacity="0.32"/>
+            <circle cx="40" cy="510" r="4.5" fill="#1F8A5A"/>
+            <circle cx="40" cy="510" r="1.5" fill="#FFFFFF"/>
+          </g>
+
+          <!-- End pin (droplet) at route end -->
+          <g transform="translate(340, 120)">
+            <path d="M0 -18 C 10 -18 14 -8 14 -2 C 14 6 4 12 0 18 C -4 12 -14 6 -14 -2 C -14 -8 -10 -18 0 -18 Z"
+                  fill="#E11D48"/>
+            <circle r="4" fill="#FFFFFF"/>
+          </g>
+
+          <!-- Route glow (blurred copy) -->
+          <path id="route-glow-path"
+                d="M 40 510 Q 90 450 140 410 T 220 310 T 290 220 T 340 120"
+                fill="none" stroke="url(#grad-route)" stroke-width="10"
+                stroke-linecap="round" opacity="0.35" filter="url(#route-glow)"/>
+
+          <!-- Route path (the real one — used by JS) -->
           <path id="route-path"
-                d="M 40 540 Q 80 460 140 420 T 230 300 T 300 180 T 340 60"
-                fill="none"
-                stroke="url(#route-grad)"
-                stroke-width="5"
-                stroke-linecap="round"
-                filter="url(#route-glow)" />
-          <circle id="rider-dot" cx="40" cy="540" r="8"
-                  fill="#2E8B57" stroke="#fff" stroke-width="3" />
+                d="M 40 510 Q 90 450 140 410 T 220 310 T 290 220 T 340 120"
+                fill="none" stroke="url(#grad-route)" stroke-width="5"
+                stroke-linecap="round"/>
+
+          <!-- Route dashes (rhythm) -->
+          <path d="M 40 510 Q 90 450 140 410 T 220 310 T 290 220 T 340 120"
+                fill="none" stroke="#FFFFFF" stroke-width="1.6"
+                stroke-dasharray="1 9" stroke-linecap="round" opacity="0.9"/>
+
+          <!-- Rider dot (moved by JS) -->
+          <g id="rider-group">
+            <circle id="rider-halo" cx="40" cy="510" r="10" fill="#1F8A5A" opacity="0.2"/>
+            <circle id="rider-dot" cx="40" cy="510" r="6" fill="#FFFFFF" stroke="#1F8A5A" stroke-width="2.5"/>
+          </g>
         </svg>
 
-        <!-- Collectibles -->
-        <button class="collectible collectible--rose" style="top: 58%; left: 34%;"
-                data-coins="15" data-label="Daisy collected" data-icon="i-flower">
-          <svg class="icon"><use href="#i-flower"/></svg>
+        <!-- HTML compass badge, top-right -->
+        <div class="compass" aria-hidden="true">
+          <svg class="icon" viewBox="0 0 24 24"><use href="#i-compass"/></svg>
+          <span class="compass-n">N</span>
+        </div>
+
+        <!-- Collectibles — positioned by JS using data-t (0..1 along route) -->
+        <button class="collectible" type="button" data-t="0.18" data-coins="10" data-label="Leaf collected" data-icon="i-leaf" aria-label="Leaf">
+          <svg class="icon" viewBox="0 0 24 24"><use href="#i-leaf"/></svg>
         </button>
-        <button class="collectible collectible--amber" style="top: 42%; left: 62%;"
-                data-coins="25" data-label="Energy boost" data-icon="i-bolt">
-          <svg class="icon"><use href="#i-bolt"/></svg>
+        <button class="collectible collectible--pink" type="button" data-t="0.40" data-coins="15" data-label="Flower collected" data-icon="i-flower" aria-label="Flower">
+          <svg class="icon" viewBox="0 0 24 24"><use href="#i-flower"/></svg>
         </button>
-        <button class="collectible collectible--green" style="top: 28%; left: 48%;"
-                data-coins="10" data-label="Sparkle collected" data-icon="i-sparkle">
-          <svg class="icon"><use href="#i-sparkle"/></svg>
+        <button class="collectible collectible--purple" type="button" data-t="0.62" data-coins="25" data-label="Gem collected" data-icon="i-gem" aria-label="Gem">
+          <svg class="icon" viewBox="0 0 24 24"><use href="#i-gem"/></svg>
         </button>
-        <button class="collectible collectible--teal" style="top: 14%; left: 72%;"
-                data-coins="40" data-label="Rare gem" data-icon="i-gem">
-          <svg class="icon"><use href="#i-gem"/></svg>
+        <button class="collectible collectible--gold" type="button" data-t="0.85" data-coins="50" data-label="Sparkle bonus" data-icon="i-sparkle" aria-label="Sparkle">
+          <svg class="icon" viewBox="0 0 24 24"><use href="#i-sparkle"/></svg>
         </button>
+
+        <!-- Friend dots — positions set by JS -->
+        <div class="friend-dot" id="friend-dot-jordan" style="--f-color:#0E7C86" aria-hidden="true">J</div>
+        <div class="friend-dot" id="friend-dot-sam"    style="--f-color:#1F8A5A" aria-hidden="true">S</div>
+
+        <!-- Group banner — shown by JS when friends are nearby -->
+        <div class="group-banner" id="group-banner" aria-hidden="true">
+          <svg class="icon-sm" viewBox="0 0 24 24"><use href="#i-friends"/></svg>
+          Riding with friends · 1.5× coins
+        </div>
       </div>
 
-      <!-- Bottom stats panel -->
+      <!-- Floating toast when an item is auto-collected -->
+      <div class="toast" id="ride-toast" hidden>
+        <span class="toast-ico" id="toast-icon">
+          <svg class="icon" viewBox="0 0 24 24"><use href="#i-sparkle"/></svg>
+        </span>
+        <span class="toast-text" id="toast-text">+10 coins</span>
+      </div>
+
+      <!-- Live stats panel -->
       <div class="ride-panel">
-        <div class="panel-handle" aria-hidden="true"></div>
-        <div class="panel-stats">
-          <div class="panel-stat">
-            <p class="ps-value" id="ride-distance">0.0</p>
-            <p class="ps-label">Miles</p>
+        <div class="ride-panel-head">
+          <span class="ride-kicker">Live stats</span>
+          <span class="ride-timer" id="ride-timer"><span id="ride-timer-text">00:00</span></span>
+        </div>
+        <div class="stats-row stats-row--ride">
+          <div class="stat">
+            <span class="stat-ico stat-ico--green"><svg class="icon-sm" viewBox="0 0 24 24"><use href="#i-bike"/></svg></span>
+            <div>
+              <span class="stat-value"><span id="ride-distance">0.00</span><small>mi</small></span>
+              <span class="stat-label">Distance</span>
+            </div>
           </div>
-          <div class="panel-sep"></div>
-          <div class="panel-stat">
-            <p class="ps-value" id="ride-energy">0</p>
-            <p class="ps-label">Watt-hrs</p>
+          <div class="stat">
+            <span class="stat-ico stat-ico--teal"><svg class="icon-sm" viewBox="0 0 24 24"><use href="#i-bolt"/></svg></span>
+            <div>
+              <span class="stat-value"><span id="ride-energy">0</span><small>Wh</small></span>
+              <span class="stat-label">Energy</span>
+            </div>
           </div>
-          <div class="panel-sep"></div>
-          <div class="panel-stat">
-            <p class="ps-value" id="ride-coins">0</p>
-            <p class="ps-label">Coins</p>
+          <div class="stat">
+            <span class="stat-ico stat-ico--amber"><svg class="icon-sm" viewBox="0 0 24 24"><use href="#i-coin"/></svg></span>
+            <div>
+              <span class="stat-value" id="ride-coins">0</span>
+              <span class="stat-label">Coins</span>
+            </div>
           </div>
         </div>
-
-        <div class="panel-toast" id="ride-toast" hidden>
-          <svg class="icon icon--sm" id="toast-icon"><use href="#i-flower"/></svg>
-          <span id="toast-text">+15 coins · Daisy collected</span>
-        </div>
-
-        <button class="cta-end" id="btn-end-ride">
-          <svg class="icon icon--sm"><use href="#i-flag"/></svg>
-          End Ride
+        <button class="btn-end" id="btn-end-ride" type="button">
+          <svg class="icon-sm" viewBox="0 0 24 24"><use href="#i-flag"/></svg>
+          End ride
         </button>
       </div>
-
     </section>
 
-    <!-- ===== TAB BAR ===== -->
-    <nav class="tab-bar">
-      <button class="tab is-active" data-tab="home">
-        <svg class="icon"><use href="#i-home"/></svg>
-        <span>Home</span>
+    <!-- ==========================================================
+         AVATAR SCREEN — create / personalize a character
+         ========================================================== -->
+    <section class="screen" id="screen-avatar" aria-label="Avatar">
+      <header class="subscreen-top">
+        <h2 class="subscreen-title">Your avatar</h2>
+        <button class="icon-btn" aria-label="Settings">
+          <svg class="icon" viewBox="0 0 24 24"><use href="#i-settings"/></svg>
+        </button>
+      </header>
+
+      <div class="avatar-stage">
+        <div class="avatar-char" aria-hidden="true">
+          <svg viewBox="0 0 120 160" class="avatar-svg">
+            <!-- simple character silhouette -->
+            <ellipse cx="60" cy="152" rx="36" ry="6" fill="#0F172A" opacity="0.12"/>
+            <circle cx="60" cy="40" r="22" fill="#F5D0B0"/>
+            <path d="M38 38a22 22 0 0 1 44-2c-6-2-10-8-22-8s-16 6-22 10Z" fill="#3E2723"/>
+            <rect x="36" y="62" width="48" height="60" rx="12" fill="#1F8A5A"/>
+            <path d="M36 84c16 6 32 6 48 0" stroke="#15784C" stroke-width="2" fill="none"/>
+            <rect x="36" y="122" width="22" height="28" rx="6" fill="#0F6640"/>
+            <rect x="62" y="122" width="22" height="28" rx="6" fill="#0F6640"/>
+            <circle cx="60" cy="36" r="3" fill="#0F172A"/>
+            <circle cx="52" cy="38" r="1.5" fill="#0F172A"/>
+            <circle cx="68" cy="38" r="1.5" fill="#0F172A"/>
+          </svg>
+        </div>
+
+        <div class="avatar-stats">
+          <span class="badge badge--green">Lv. 7</span>
+          <span class="badge badge--amber">1,240 coins</span>
+        </div>
+      </div>
+
+      <div class="tabs-mini" role="tablist">
+        <button class="tabs-mini-btn is-active" type="button">Wardrobe</button>
+        <button class="tabs-mini-btn" type="button">Bikes</button>
+        <button class="tabs-mini-btn" type="button">Boosts</button>
+      </div>
+
+      <div class="wardrobe-grid">
+        <div class="ward-item is-equipped"><div class="ward-swatch" style="background:#1F8A5A"></div><span>Bloom tee</span></div>
+        <div class="ward-item"><div class="ward-swatch" style="background:#0E7C86"></div><span>Teal jersey</span></div>
+        <div class="ward-item"><div class="ward-swatch" style="background:#D97706"></div><span>Sun vest</span></div>
+        <div class="ward-item locked"><div class="ward-swatch" style="background:#6B7280"></div><span>Rain coat</span></div>
+        <div class="ward-item locked"><div class="ward-swatch" style="background:#6366F1"></div><span>Night pack</span></div>
+        <div class="ward-item locked"><div class="ward-swatch" style="background:#E11D48"></div><span>Rose kit</span></div>
+      </div>
+    </section>
+
+    <!-- ==========================================================
+         FRIENDS SCREEN
+         ========================================================== -->
+    <section class="screen" id="screen-friends" aria-label="Friends">
+      <header class="subscreen-top">
+        <h2 class="subscreen-title">Friends</h2>
+        <button class="icon-btn" aria-label="Add friend">
+          <svg class="icon" viewBox="0 0 24 24"><use href="#i-plus"/></svg>
+        </button>
+      </header>
+
+      <label class="search">
+        <svg class="icon-sm search-ico" viewBox="0 0 24 24"><use href="#i-search"/></svg>
+        <input type="text" placeholder="Search friends or username" />
+      </label>
+
+      <p class="list-label">Riding now · 2</p>
+      <ul class="friend-list">
+        <li class="friend">
+          <span class="friend-ava" style="background:#1F8A5A">J</span>
+          <div class="friend-main">
+            <p class="friend-name">Jordan L. <span class="online-dot"></span></p>
+            <p class="friend-sub">8.2 mi today · 420 coins</p>
+          </div>
+          <button class="chat-btn" aria-label="Chat with Jordan">
+            <svg class="icon-sm" viewBox="0 0 24 24"><use href="#i-message"/></svg>
+          </button>
+        </li>
+        <li class="friend">
+          <span class="friend-ava" style="background:#0E7C86">S</span>
+          <div class="friend-main">
+            <p class="friend-name">Sam K. <span class="online-dot"></span></p>
+            <p class="friend-sub">3.6 mi today · 180 coins</p>
+          </div>
+          <button class="chat-btn" aria-label="Chat with Sam">
+            <svg class="icon-sm" viewBox="0 0 24 24"><use href="#i-message"/></svg>
+          </button>
+        </li>
+      </ul>
+
+      <p class="list-label">All friends</p>
+      <ul class="friend-list">
+        <li class="friend">
+          <span class="friend-ava" style="background:#D97706">M</span>
+          <div class="friend-main">
+            <p class="friend-name">Maya T.</p>
+            <p class="friend-sub">Last ride yesterday</p>
+          </div>
+          <button class="chat-btn" aria-label="Chat with Maya">
+            <svg class="icon-sm" viewBox="0 0 24 24"><use href="#i-message"/></svg>
+          </button>
+        </li>
+        <li class="friend">
+          <span class="friend-ava" style="background:#6366F1">A</span>
+          <div class="friend-main">
+            <p class="friend-name">Alex R.</p>
+            <p class="friend-sub">Last ride 3d ago</p>
+          </div>
+          <button class="chat-btn" aria-label="Chat with Alex">
+            <svg class="icon-sm" viewBox="0 0 24 24"><use href="#i-message"/></svg>
+          </button>
+        </li>
+        <li class="friend">
+          <span class="friend-ava" style="background:#E11D48">P</span>
+          <div class="friend-main">
+            <p class="friend-name">Priya N.</p>
+            <p class="friend-sub">Last ride 1w ago</p>
+          </div>
+          <button class="chat-btn" aria-label="Chat with Priya">
+            <svg class="icon-sm" viewBox="0 0 24 24"><use href="#i-message"/></svg>
+          </button>
+        </li>
+      </ul>
+    </section>
+
+    <!-- ==========================================================
+         COMMUNITY SCREEN
+         ========================================================== -->
+    <section class="screen" id="screen-community" aria-label="Community">
+      <header class="subscreen-top">
+        <h2 class="subscreen-title">Community</h2>
+        <span class="badge badge--teal">This week</span>
+      </header>
+
+      <!-- Crew collective kWh banner -->
+      <div class="comm-impact">
+        <p class="comm-impact-label">Crew · 6 Riders</p>
+        <p class="comm-impact-value">18.7 kWh</p>
+        <p class="comm-impact-sub">generated together this week</p>
+        <div class="comm-avatars">
+          <div class="comm-ava" style="background:#D97706">M</div>
+          <div class="comm-ava" style="background:#0E7C86">S</div>
+          <div class="comm-ava" style="background:#1F8A5A">J</div>
+          <div class="comm-ava" style="background:#6366F1">A</div>
+          <div class="comm-ava" style="background:#E11D48">P</div>
+          <div class="comm-ava comm-ava--you">You</div>
+        </div>
+      </div>
+
+      <!-- Next milestone -->
+      <div class="milestone-card">
+        <div class="milestone-head">
+          <span class="milestone-title">Next milestone</span>
+          <span class="badge badge--green">76%</span>
+        </div>
+        <p class="milestone-name">50 kWh together</p>
+        <div class="progress">
+          <div class="progress-bar" style="--pct:76%"></div>
+        </div>
+        <p class="progress-caption">38.0 of 50 kWh · 12.0 kWh to go</p>
+        <div class="milestone-reward">
+          <svg class="icon-sm" viewBox="0 0 24 24"><use href="#i-sprout"/></svg>
+          Everyone unlocks: Crew Jersey
+        </div>
+      </div>
+
+      <!-- Recent activity -->
+      <p class="list-label">Recent activity</p>
+      <ul class="activity-feed">
+        <li class="activity-item">
+          <span class="friend-ava" style="background:#1F8A5A">J</span>
+          <div class="activity-main">
+            <p class="activity-text"><strong>Jordan</strong> rode 8.2 mi</p>
+            <p class="activity-sub">Campus Park · 2h ago · +0.9 kWh</p>
+          </div>
+        </li>
+        <li class="activity-item">
+          <span class="friend-ava" style="background:#0E7C86">S</span>
+          <div class="activity-main">
+            <p class="activity-text"><strong>Sam</strong> rode 3.6 mi</p>
+            <p class="activity-sub">River District · 4h ago · +0.4 kWh</p>
+          </div>
+        </li>
+        <li class="activity-item">
+          <span class="friend-ava" style="background:#D97706">M</span>
+          <div class="activity-main">
+            <p class="activity-text"><strong>Maya</strong> rode 11.0 mi</p>
+            <p class="activity-sub">Oakwood loop · Yesterday · +1.2 kWh</p>
+          </div>
+        </li>
+        <li class="activity-item">
+          <span class="friend-ava" style="background:#6366F1">A</span>
+          <div class="activity-main">
+            <p class="activity-text"><strong>Alex</strong> rode 14.3 mi</p>
+            <p class="activity-sub">Main Ave · 2d ago · +1.6 kWh</p>
+          </div>
+        </li>
+      </ul>
+    </section>
+
+    <!-- ==========================================================
+         TAB BAR — 5 items with elevated center Live Ride button.
+         Left→right: Map, Avatar, [LIVE RIDE], Friends, Leaderboards.
+         ========================================================== -->
+    <nav class="tab-bar" aria-label="Primary">
+      <button class="tab is-active" data-tab="map" type="button">
+        <svg class="icon" viewBox="0 0 24 24"><use href="#i-map"/></svg>
+        <span>Map</span>
       </button>
-      <button class="tab" data-tab="map">
-        <svg class="icon"><use href="#i-map"/></svg>
-        <span>Ride</span>
+      <button class="tab" data-tab="avatar" type="button">
+        <svg class="icon" viewBox="0 0 24 24"><use href="#i-avatar"/></svg>
+        <span>Avatar</span>
       </button>
-      <button class="tab" data-tab="rewards">
-        <svg class="icon"><use href="#i-gift"/></svg>
-        <span>Rewards</span>
+      <button class="tab tab-center" data-tab="ride" type="button" aria-label="Live ride">
+        <span class="tab-center-inner">
+          <svg class="icon-lg" viewBox="0 0 24 24"><use href="#i-bike"/></svg>
+        </span>
+        <span class="tab-center-label">Live Ride</span>
       </button>
-      <button class="tab" data-tab="impact">
-        <svg class="icon"><use href="#i-sprout"/></svg>
-        <span>Impact</span>
+      <button class="tab" data-tab="friends" type="button">
+        <svg class="icon" viewBox="0 0 24 24"><use href="#i-friends"/></svg>
+        <span>Friends</span>
+      </button>
+      <button class="tab" data-tab="community" type="button">
+        <svg class="icon" viewBox="0 0 24 24"><use href="#i-sprout"/></svg>
+        <span>Community</span>
       </button>
     </nav>
-
   </div>
-
-  <p class="frame-caption">Bloom Bike · Prototype</p>
 
   <script src="app.js"></script>
 </body>
